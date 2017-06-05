@@ -1,0 +1,539 @@
+badr args exception
+package MeinFunc.exception;
+
+public class BadArgsException extends MeinFuncException {
+
+    public BadArgsException() {
+    }
+
+    public BadArgsException(String s) {
+        super(s);
+    }
+
+    public BadArgsException(String s, Throwable throwable) {
+        super(s, throwable);
+    }
+
+    public BadArgsException(Throwable throwable) {
+        super(throwable);
+    }
+}
+sassafassaffsa
+badx
+package MeinFunc.exception;
+
+public class BadXValueException extends MeinFuncException {
+    public BadXValueException() {
+    }
+
+    public BadXValueException(String s) {
+        super(s);
+    }
+
+    public BadXValueException(String s, Throwable throwable) {
+        super(s, throwable);
+    }
+
+    public BadXValueException(Throwable throwable) {
+        super(throwable);
+    }
+}
+|||
+DIVIDEDBYZERO\
+package MeinFunc.exception;
+
+public class DividedByZero extends MeinFuncException {
+    public DividedByZero() {
+    }
+
+    public DividedByZero(String s) {
+        super(s);
+    }
+
+    public DividedByZero(String s, Throwable throwable) {
+        super(s, throwable);
+    }
+
+    public DividedByZero(Throwable throwable) {
+        super(throwable);
+    }
+}
+////
+MeinFunc
+package MeinFunc.exception;
+
+public class MeinFuncException extends Exception {
+
+    public MeinFuncException() {
+    }
+
+    public MeinFuncException(String s) {
+        super(s);
+    }
+
+    public MeinFuncException(String s, Throwable throwable) {
+        super(s, throwable);
+    }
+
+    public MeinFuncException(Throwable throwable) {
+        super(throwable);
+    }
+}
+???
+BasicFunction
+package MeinFunc;
+
+import MeinFunc.exception.BadArgsException;
+import MeinFunc.exception.MeinFuncException;
+import MeinFunctional.exceptions.MeinFunctionalException;
+
+public class BasicFunction {
+
+    protected   double a_left;
+    protected   double b_right;
+    protected   double A;
+    protected   double B;
+
+    public void setA_left(double a_left) {
+        this.a_left = a_left;
+    }
+
+    public void setB_right(double b_right) {
+        this.b_right = b_right;
+    }
+
+    public void setA(double a) {
+        A = a;
+    }
+
+    public void setB(double b) {
+        B = b;
+    }
+
+    public double getA_left() {
+        return a_left;
+    }
+
+    public double getB_right() {
+        return b_right;
+    }
+
+    public double getA() {
+        return A;
+    }
+
+    public double getB() {
+        return B;
+    }
+
+    public BasicFunction(double a_left, double b_right, double a, double b) throws MeinFuncException {
+        if (a_left>=b_right){
+            throw new BadArgsException("a,b не является отрезком");
+        }
+        this.a_left = a_left;
+        this.b_right = b_right;
+        A = a;
+        B = b;
+    }
+}
+
+////
+FuncAdd\
+package MeinFunc;
+
+import MeinFunc.exception.BadArgsException;
+import MeinFunc.exception.BadXValueException;
+import MeinFunc.exception.MeinFuncException;
+
+public class FuncAdd extends BasicFunction implements IFunc {
+
+
+    public FuncAdd(double a_left, double b_right, double a, double b) throws MeinFuncException {
+        super(a_left, b_right, a, b);
+    }
+
+    public double calculate(double x) throws MeinFuncException {
+        if((a_left>x)||(b_right<x)){
+            throw  new BadXValueException("X не принадлежит [a b]");
+        }
+        return (A*x+B);
+    }
+}
+
+FuncDiv
+package MeinFunc;
+
+import MeinFunc.exception.BadArgsException;
+import MeinFunc.exception.BadXValueException;
+import MeinFunc.exception.DividedByZero;
+import MeinFunc.exception.MeinFuncException;
+
+public class FuncDiv extends BasicFunction implements IFunc {
+    private  double c;
+    private  double d;
+
+
+
+    public FuncDiv(double a_left, double b_right, double a, double b, double c,double d ) throws MeinFuncException {
+        super(a_left, b_right, a, b);
+        this.c = c;
+        this.d = d;
+    }
+
+    public double calculate(double x) throws MeinFuncException {
+        if((a_left>x)||(b_right<x)){
+            throw  new BadXValueException("X не принадлежит  [a b]");
+
+
+        }
+
+        if(Math.abs(c*x+d)<1e-9){
+            throw  new DividedByZero("Деление на ноль");
+
+        }
+        return (A*x+B)/(c*x+d);
+    }
+
+
+}
+/////\
+FuncEXP
+package MeinFunc;
+
+import MeinFunc.exception.BadArgsException;
+import MeinFunc.exception.BadXValueException;
+import MeinFunc.exception.MeinFuncException;
+
+public class FuncExp extends BasicFunction  implements IFunc {
+
+
+
+    public FuncExp(double a_left, double b_right, double a, double b) throws MeinFuncException {
+        super(a_left, b_right, a, b);
+    }
+
+
+    public double calculate(double x) throws MeinFuncException {
+        if((a_left>x)||(b_right<x)){
+            throw  new BadXValueException("X не принадлежит  [a b]");
+
+
+        }
+        return A*Math.exp(x)+B;
+    }
+
+
+}
+
+
+||||
+FuncSin
+package MeinFunc;
+
+import MeinFunc.exception.BadArgsException;
+import MeinFunc.exception.MeinFuncException;
+
+public class FuncSin extends BasicFunction implements IFunc {
+
+
+
+    public FuncSin(double a_left, double b_right, double a, double b) throws MeinFuncException {
+        super(a_left, b_right, a, b);
+    }
+
+    public double calculate(double x) throws MeinFuncException {
+        if((a_left>x)||(b_right<x)){
+            throw  new MeinFuncException("X не принадлежит  [a b]");
+
+
+        }
+        return (Math.sin(x*B))*A;
+    }
+
+
+}
+Ifunc\\
+package MeinFunc;
+
+import MeinFunc.exception.MeinFuncException;
+
+public interface IFunc {
+
+    double calculate (double x) throws MeinFuncException;
+    double getA_left();
+    double getB_right();
+
+}
+
+ПАКЕТ MeinFUNCTIONAL
+MeinFuncException\
+package MeinFunctional.exceptions;
+
+public class MeinFunctionalException extends  Exception {
+
+
+
+    public MeinFunctionalException() {
+    }
+
+    public MeinFunctionalException(String s) {
+        super(s);
+    }
+
+    public MeinFunctionalException(String s, Throwable throwable) {
+        super(s, throwable);
+    }
+
+    public MeinFunctionalException(Throwable throwable) {
+        super(throwable);
+    }
+}
+
+OutOfDefintionAreaException\\
+package MeinFunctional.exceptions;
+
+public class OutOfDefinitionAreaException extends MeinFunctionalException {
+    public OutOfDefinitionAreaException() {
+    }
+
+    public OutOfDefinitionAreaException(String s) {
+        super(s);
+    }
+
+    public OutOfDefinitionAreaException(String s, Throwable throwable) {
+        super(s, throwable);
+    }
+}
+
+FuncIntegral\
+package MeinFunctional;
+
+import MeinFunc.IFunc;
+import MeinFunc.exception.MeinFuncException;
+import MeinFunctional.exceptions.MeinFunctionalException;
+import MeinFunctional.exceptions.OutOfDefinitionAreaException;
+
+public class FunctionalIntegral implements  IFunctional {
+
+     private double a;
+     private double b;
+     private int n;
+
+
+    public FunctionalIntegral(double a, double b, int n) {
+        this.a = a;
+        this.b = b;
+        this.n = n;
+    }
+
+    public double calculateFunctional(IFunc func) throws MeinFunctionalException {
+
+        int i;
+        double result, h;
+
+        result = 0;
+
+        h = (b - a) / n; //Шаг сетки
+
+        for(i = 0; i < n; i++)
+        {
+            try {
+                result += func.calculate(a + h * (i + 0.5)); //Вычисляем в средней точке и добавляем в сумму
+            } catch (MeinFuncException e) {
+                throw new OutOfDefinitionAreaException("Возникло исключение вида MeinFuncException c текстом "+e.getMessage());
+            }
+        }
+
+        result *= h;
+
+        return result;
+
+
+
+
+
+    }
+}
+FUNCTIONALSUMM\
+package MeinFunctional;
+
+import MeinFunc.IFunc;
+import MeinFunc.exception.MeinFuncException;
+import MeinFunctional.exceptions.MeinFunctionalException;
+import MeinFunctional.exceptions.OutOfDefinitionAreaException;
+
+public class FunctionalSumm implements IFunctional {
+    public FunctionalSumm() {
+    }
+
+    public double calculateFunctional(IFunc func) throws MeinFunctionalException {
+        try {
+            return(
+                    func.calculate(func.getA_left())+
+                    func.calculate(func.getB_right())+
+                    func.calculate(func.getA_left()*0.5+func.getB_right()*0.5)
+             );
+        } catch (MeinFuncException e) {
+            throw new OutOfDefinitionAreaException("Возникло исключение вида MeinFuncException c текстом "+e.getMessage());
+        }
+    }
+}
+IFUNCTIONAl\package MeinFunctional;
+
+import MeinFunc.IFunc;
+import MeinFunctional.exceptions.MeinFunctionalException;
+
+public interface IFunctional<T extends IFunc> {
+    double calculateFunctional(T func) throws MeinFunctionalException;
+}
+
+TECTY?||
+
+package MeinFunc;
+
+import MeinFunc.exception.BadArgsException;
+import MeinFunc.exception.BadXValueException;
+import MeinFunc.exception.DividedByZero;
+import MeinFunc.exception.MeinFuncException;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class FuncDivTest {
+
+        @Test
+        void calculate_bordersCrash() throws MeinFuncException {
+            assertThrows(BadArgsException.class //имя ожидаемого исклюяени
+                    , new Executable() {
+                        public void execute() throws Throwable {
+                            //сюда код который бросает исключение
+                            new FuncDiv(1,-100,5,5,5,5);
+                        }
+                    });
+        }
+
+    @Test
+    void calculate() {
+        try {
+            FuncDiv testFunc = new FuncDiv(-5,5,5,5,5,5);
+            double result = testFunc.calculate(0);
+            assertEquals(1,result,1e-9);
+        } catch (MeinFuncException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Test
+    void calculate_divByZeroCrash() throws MeinFuncException {
+        assertThrows(DividedByZero.class, new Executable() {
+            public void execute() throws Throwable {
+                FuncDiv testFunc = new FuncDiv(-5,5,5,5,5,0);
+                testFunc.calculate(0);
+            }
+        });
+    }
+
+    @Test
+    void calculate_xNotInDefAreaCrash() throws MeinFuncException {
+        assertThrows(BadXValueException.class, new Executable() {
+            public void execute() throws Throwable {
+                FuncDiv testFunc = new FuncDiv(-5,5,5,5,5,5);
+                testFunc.calculate(-100);
+            }
+        });
+
+    }
+
+}
+
+FunctionalIntegralTest
+package MeinFunctional;
+
+import MeinFunc.FuncDiv;
+import MeinFunc.FuncExp;
+import MeinFunc.FuncSin;
+import MeinFunc.exception.BadArgsException;
+import MeinFunc.exception.MeinFuncException;
+import MeinFunctional.exceptions.MeinFunctionalException;
+import MeinFunctional.exceptions.OutOfDefinitionAreaException;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+
+class FunctionalIntegralTest {
+    @Test
+    void calculateFunctional_OutOfDefinitionAreaException() throws MeinFuncException {
+        assertThrows(OutOfDefinitionAreaException.class //имя ожидаемого исклюяени
+                , new Executable() {
+                    public void execute() throws Throwable {
+                        FunctionalIntegral integal = new FunctionalIntegral(1, 100, 60);
+                        FuncDiv div1 = new FuncDiv(-5,5,5,5,5,5);
+                        integal.calculateFunctional(div1);
+
+                    }
+                });
+    }
+
+    @Test
+    void calculateFunctional() {
+        try {
+
+            FuncSin obj = new FuncSin(-10, 10,-5,5);
+
+            FunctionalIntegral integral_0_Pi = new FunctionalIntegral(0, 3.14, 100);
+            double result = integral_0_Pi.calculateFunctional(obj);
+            assertEquals(-2, result,1e-1 );
+
+        } catch (MeinFuncException e) {
+           e.printStackTrace();
+        } catch (MeinFunctionalException e1) {
+            e1.printStackTrace();
+        }
+
+
+    }
+
+    @Test
+    void calculateFunctionalExp() {
+        try {
+
+            FuncExp obj = new FuncExp(-10, 10,1,0);
+
+            FunctionalIntegral integral_0_4 = new FunctionalIntegral(0, 4, 100);
+            double result = integral_0_4.calculateFunctional(obj);
+            assertEquals(53.6, result,1e-1 );
+
+        } catch (MeinFuncException e) {
+            e.printStackTrace();
+        } catch (MeinFunctionalException e1) {
+            e1.printStackTrace();
+        }
+
+
+    }
+
+}
+
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>mpb-502-0. der67</groupId>
+    <artifactId>chtoSudaPisat</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <dependencies>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>RELEASE</version>
+        </dependency>
+    </dependencies>
+
+
+</project>
